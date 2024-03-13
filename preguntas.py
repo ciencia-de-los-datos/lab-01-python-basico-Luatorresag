@@ -21,8 +21,18 @@ def pregunta_01():
     214
 
     """
-    return
-
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+        data_1 = []
+        for line in data:
+            line = line.split("\t")
+            data_1.append(line[1])
+        data_1 = [int(i) for i in data_1]
+        suma = 0
+        for n  in data_1:
+            suma = suma + n 
+       
+    return suma
 
 def pregunta_02():
     """
@@ -39,7 +49,24 @@ def pregunta_02():
     ]
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+    first_letters = []
+    count_letter = {}
+    for line in data:
+        line = line.split("\t")
+        first_letters.append(line[0])
+    first_letters.sort()
+    for letter in first_letters:
+        if letter in count_letter:
+            count_letter[letter] += 1
+        else:
+            count_letter[letter] = 1
+    resultado = []
+    for tuple_ in count_letter:
+        resultado.append((tuple_,count_letter[tuple_]))
+        
+    return resultado
 
 
 def pregunta_03():
@@ -57,7 +84,20 @@ def pregunta_03():
     ]
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+    data_1 = [(line.split("\t")[0], int(line.split("\t")[1])) for line in data]
+    data_1 = sorted(data_1)
+    sum_letter = {}
+    for element in data_1:
+        if element[0] in sum_letter:
+            sum_letter[element[0]] += element[1] 
+        else:
+            sum_letter[element[0]] = element[1]
+            
+    result = [(key, sum_letter[key]) for key in sum_letter]        
+    # result = [(key, value) for key, value in sum_letter.items()]        
+    return result
 
 
 def pregunta_04():
@@ -82,7 +122,23 @@ def pregunta_04():
     ]
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+    data_1 = [line.split("\t")[2] for line in data]
+    data_1 = [line.split("-")[1] for line in data_1]
+    # data_1 =  sorted(data_1)
+    count_month = {}
+    
+    for element in data_1:
+        if element in count_month:
+            count_month[element] += 1
+        else:
+            count_month[element] = 1
+
+    result = [(key, count_month[key]) for key in count_month]       
+    result = sorted(result)
+    
+    return result
 
 
 def pregunta_05():
@@ -100,8 +156,29 @@ def pregunta_05():
     ]
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+    data_1 = [(line.split("\t")[0], int(line.split("\t")[1])) for line in data]
+    max_min = {}
+    for elem in data_1:
+        if elem[0] in max_min:
+            max = max_min[elem[0]][0]
+            min = max_min[elem[0]][1]
+            if max < elem[1]:
+                max = elem[1]
+            if min > elem[1]:
+                min = elem[1]
 
+            max_min[elem[0]] = [max, min]
+        
+        else:
+            max_min[elem[0]] = [elem[1], elem[1]]
+    
+    result = [(key,value[0], value[1]) for key, value in max_min.items() ]
+    result = sorted(result)
+ 
+    
+    return result
 
 def pregunta_06():
     """
@@ -125,14 +202,35 @@ def pregunta_06():
     ]
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()       
+    data_1 = [line.split("\t")[4].strip() for line in data]
+    data_1 = [elemt.split(",") for elemt in data_1]
+    data_1 = [(elemt.split(":")[0], int(elemt.split(":")[1])) for lista in data_1 for elemt in lista]
+    min_max = {}
+    for elem in data_1:
+        if elem[0] in min_max:
+            min = min_max[elem[0]][0]
+            max = min_max[elem[0]][1]
+            if max < elem[1]:
+                max = elem[1]
+            if min > elem[1]:
+                min = elem[1]
+
+            min_max[elem[0]] = [min, max]
+        else:
+            min_max[elem[0]] = [elem[1], elem[1]]
+    
+    result = [(key,value[0], value[1]) for key, value in min_max.items()] 
+    result = sorted(result)
+    return result
 
 
 def pregunta_07():
     """
     Retorne una lista de tuplas que asocien las columnas 0 y 1. Cada tupla contiene un
-    valor posible de la columna 2 y una lista con todas las letras asociadas (columna 1)
-    a dicho valor de la columna 2.
+    valor posible de la columna 1 y una lista con todas las letras asociadas (columna 0)
+    a dicho valor de la columna 1.
 
     Rta/
     [
@@ -149,7 +247,19 @@ def pregunta_07():
     ]
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+    data_1 = [(line.split("\t")[0], int(line.split("\t")[1])) for line in data]
+    letter_aso = {}
+    for valor, clave in data_1:
+        if clave not in letter_aso:
+            letter_aso[clave] = []
+        letter_aso[clave].append(valor)
+    
+    result = [(key,value) for key, value in letter_aso.items()] 
+    result = sorted(result)   
+        
+    return result
 
 
 def pregunta_08():
@@ -174,7 +284,20 @@ def pregunta_08():
     ]
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+    data_1 = [(line.split("\t")[0], int(line.split("\t")[1])) for line in data]
+    letter_aso = {}
+    for valor, clave in data_1:
+        if clave not in letter_aso:
+            letter_aso[clave] = set()
+        letter_aso[clave].add(valor)
+    
+    result = [(key,sorted(list(value))) for key, value in letter_aso.items()] 
+    result = sorted(result)   
+        
+        
+    return result
 
 
 def pregunta_09():
@@ -197,7 +320,25 @@ def pregunta_09():
     }
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()       
+    data_1 = [line.split("\t")[4].strip() for line in data]
+    data_1 = [elemt.split(",") for elemt in data_1]
+    data_1 = [elemt.split(":")[0] for lista in data_1 for elemt in lista]
+    sum_letter = {}
+    for element in data_1:
+        if element in sum_letter:
+            sum_letter[element] += 1
+        else:
+            sum_letter[element] = 1
+            
+    result = sorted(sum_letter)
+    letter = {}
+    for element in result:
+        letter[element] = sum_letter[element]
+        
+        
+    return letter
 
 
 def pregunta_10():
@@ -218,7 +359,13 @@ def pregunta_10():
 
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()   
+    data_1 = [(line.split("\t")[0],line.split("\t")[3],line.split("\t")[4].strip())  for line in data]
+    data_1 = [(a, len(b.split(",")), len(c.split(","))) for a,b,c in data_1]
+     
+    
+    return data_1
 
 
 def pregunta_11():
@@ -239,10 +386,34 @@ def pregunta_11():
 
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = file.readlines()
+    data_1 = [(line.split("\t")[1],line.split("\t")[3])  for line in data]
+    data_1 = [(b.split(","), int(a) )  for  a, b in data_1]
+    letter = []
+    for lista, value in  data_1:
+        for key  in lista:
+            letter.append((key,value))
+    dic_letter = {}
+    for key, value in letter:
+        if key not in dic_letter:
+            dic_letter[key] = value
+        else:
+            dic_letter[key] = dic_letter[key] + value 
+    
+    
+    result = sorted(dic_letter)
+    dic_result = {}
+    for key in result:
+        dic_result[key] = dic_letter[key]
+    
+    
+      
+    return dic_result
 
 
 def pregunta_12():
+    import re
     """
     Genere un diccionario que contengan como clave la columna 1 y como valor la suma de
     los valores de la columna 5 sobre todo el archivo.
@@ -257,4 +428,29 @@ def pregunta_12():
     }
 
     """
-    return
+    with open("data.csv", "r") as file:
+        data = []
+        for line in file:
+            data.append(line.split("\t"))
+    data_1 = [ (lista[0], lista[4].strip()) for lista  in data]
+    data_1 = [ (x, re.findall(r"\d+", y)) for x,y in data_1]
+    # data_1 = [(a, b.split(",")) for a,b in data_1]
+    values = []
+    for key, lista in data_1:
+        lista = [int(vlr) for vlr in lista]
+        values.append((key, sum(lista)))
+    
+    dict_key = {}
+    for key,value in values:
+        if key not in dict_key:
+            dict_key[key] = value
+        else:
+            dict_key[key] = dict_key[key] + value
+    
+    result = sorted(dict_key)
+    dict_resul = dict()
+    for key in result:
+        dict_resul[key]= dict_key[key]
+    
+        
+    return dict_resul
